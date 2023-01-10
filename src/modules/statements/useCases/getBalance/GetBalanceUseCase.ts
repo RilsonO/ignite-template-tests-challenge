@@ -17,23 +17,23 @@ interface IResponse {
 @injectable()
 export class GetBalanceUseCase {
   constructor(
-    @inject('StatementsRepository')
+    @inject("StatementsRepository")
     private statementsRepository: IStatementsRepository,
 
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
   ) {}
 
   async execute({ user_id }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findById(user_id);
 
-    if(!user) {
+    if (!user) {
       throw new GetBalanceError();
     }
 
     const balance = await this.statementsRepository.getUserBalance({
       user_id,
-      with_statement: true
+      with_statement: true,
     });
 
     return balance as IResponse;
